@@ -5,7 +5,7 @@ const createConnection = async () => {
     host: 'localhost',
     user: 'root',
     password: process.env.MYSQL_PASSWORD,
-    database: 'piattaforma_vaccini'
+    database: 'piattaforma_vaccini_v2'
   });
 }
 
