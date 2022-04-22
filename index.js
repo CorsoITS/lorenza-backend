@@ -5,7 +5,7 @@ const { json, urlencoded } = require('body-parser');
 const { routerAuth } = require('./rotte/auth');
 const ConnectRouter = require('./rotte/main-router')
 const controllaAutenticazione = require('./middlewares/check-auth');
-const { getUtenteById } = require('./model/dao/utente.dao');
+const { getOperatoreById } = require('./model/dao/operatore.dao');
 const app = express()
 
 app.use(cors());
@@ -22,8 +22,8 @@ app.get('/', function (req, res) {
 app.use('/', routerAuth);
 ConnectRouter(app);
 
-app.get('/utente', controllaAutenticazione, async (req, res) => {
-  const utente = await getUtenteById(req.utente_id)
+app.get('/operatore', controllaAutenticazione, async (req, res) => {
+  const utente = await getOperatoreById(req.utente_id)
   return res.json(utente.getPublicFields());
 })
 
