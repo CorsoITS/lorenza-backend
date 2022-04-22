@@ -5,7 +5,7 @@ async function persistToken(token, userId, exp = 1000 * 60 * 30) {
   const date = new Date();
   const expn = date.getTime() + exp;
   await conn.query(
-    'INSERT INTO token (token, operatore_id, exp) VALUES (?, ?, ?)',
+    'INSERT INTO token (token, opertore_id, exp) VALUES (?, ?, ?)',
     [token, userId, expn]);
 }
 
@@ -27,7 +27,7 @@ async function validateToken(token) {
   }
 
   // update exp 
-  return row.operatore_id
+  return row.opertore_id
 }
 
 module.exports = {
