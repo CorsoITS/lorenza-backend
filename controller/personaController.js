@@ -57,7 +57,6 @@ class PersonaController {
 
     static async crea (req,res) {
         try {
-            console.log ("PersonaController: crea: files: ",req.files);
             console.log ("PersonaController: crea: body: ",req.body);
             let np=new Persona();
             

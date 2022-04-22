@@ -15,10 +15,6 @@ class Persona {
         let listaPersonaDAO=await listPersona();
         let res=[];
 
-        for ( let i = 0; (i <listaPersonaDAO.length); i++ ) { 
-                 res.push(new Persona(listaPersonaDAO[i]));
-           }
-
         listaPersonaDAO.forEach( e => {
             res.push(new Persona(e));
         });
