@@ -1,5 +1,6 @@
 
 const { listPrenotazione, getPrenotazioneById, insertPrenotazione, updatePrenotazione, prenotazioneExistById, prenotazioneDeleteById, updateCampiPrenotazione} = require('../dao/prenotazione.dao');
+const Persona = require('./Persona')
 
 class Prenotazione {
     constructor(p) {
@@ -12,8 +13,8 @@ class Prenotazione {
          } 
     }    
     
-    static async lista () {
-        let listaPrenotazioneDAO=await listPrenotazione();
+    static async lista (s) {
+        let listaPrenotazioneDAO=await listPrenotazione(s);
         let res=[];
 
         listaPrenotazioneDAO.forEach( e => {
@@ -23,9 +24,12 @@ class Prenotazione {
         return res;
     }
 
-    static async get(id) {
-        let pr=await getPrenotazioneById(id);
-        if (pr) { return new Prenotazione(pr);}
+
+    static async get(id, s) {
+        console.log(s);
+        let pr=await getPrenotazioneById(id, s);
+        if (pr) { 
+            return {'prenotazione': new Prenotazione(pr), 'persona': pr.nome +' '+ pr.cognome }}
         return null;
     }
 
@@ -39,8 +43,8 @@ class Prenotazione {
         return await prenotazioneExistById(id);
     }
 
-    static async delete(id) {
-        return await prenotazioneDeleteById(id);
+    static async delete(id, s) {
+        return await prenotazioneDeleteById(id, s);
     }
 
     setId(x) {

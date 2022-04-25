@@ -1,4 +1,5 @@
 const { validateToken } = require('../model/dao/token.dao');
+const {getSedeOperatoreById }= require('../model/dao/operatore.dao')
 
 async function controllaAutenticazione(req, res, next) {
   const header = req.headers['authorization'];
@@ -20,6 +21,8 @@ async function controllaAutenticazione(req, res, next) {
     })
   }
   req.operatore_id = operatore_id;
+  req.sede_id=await getSedeOperatoreById(operatore_id);
+  console.log(req.sede_id)
   next();
   // Controlliamo in qualche modo il token
 }

@@ -23,8 +23,8 @@ app.use('/', routerAuth);
 ConnectRouter(app);
 
 app.get('/operatore', controllaAutenticazione, async (req, res) => {
-  const utente = await getOperatoreById(req.utente_id)
-  return res.json(utente.getPublicFields());
+  const operatore = await getOperatoreById(req.operatore_id)
+  return res.json(operatore.getPublicFields());
 })
 
 app.listen(3000);

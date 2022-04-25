@@ -1,9 +1,11 @@
 const res = require('express/lib/response');
 const { getConnection } = require('../../db/connessione')
 
-const listPrenotazione = async () => {
+
+const listPrenotazione = async (s) => {
   const connection = await getConnection();
-  let query='SELECT * FROM prenotazione';
+  let sedeOperatore=s;
+  let query=`SELECT * FROM prenotazione where sede_id=${sedeOperatore}`;
 
   console.log('Query:' + query);
   const [rows] = await connection.query(query);
@@ -19,15 +21,17 @@ const listPrenotazione = async () => {
 // }
 const prenotazioneExistById = async (id_prenotazione) => {
   const connection = await getConnection();
-  const query = 'SELECT 1 FROM prenotazione WHERE id = ?';
+  const query = 'SELECT 1 FROM INNER JOIN operatore on prenotazione.sede_id=operatore.sede_id WHERE prenotazione.id = ?';
   const [rows] = await connection.query(query, [id_prenotazione]);
   return rows.length > 0;
 }
 
-const getPrenotazioneById = async (id_prenotazione) => {
+const getPrenotazioneById = async (id_prenotazione, s) => {
   const connection = await getConnection();
-  const query = 'SELECT * FROM prenotazione WHERE id = ?';
-  const [rows] = await connection.query(query, [id_prenotazione]);
+  const query = `SELECT prenotazione.*, persona.nome, persona.cognome FROM prenotazione 
+  INNER JOIN persona ON prenotazione.persona_id=persona.id WHERE (prenotazione.id = ? AND prenotazione.sede_id = ?)`;
+  const [rows] = await connection.query(query, [id_prenotazione, s]);
+  console.log(rows[0]);
   return rows[0];
 }
 
@@ -42,9 +46,9 @@ const insertPrenotazione = async (data, sede_id, persona_id, somministrazione_id
 const updatePrenotazione = async (id, data, sede_id, persona_id) => {
   const connection = await getConnection();
   try{
-  const query = `UPDATE prenotazione SET data = ?, sede_id = ?, persona_id = ?
+  const query = `UPDATE prenotazione SET data = ?, persona_id = ?
   WHERE id = ?`;
-  const [res] = await connection.query(query, [data, sede_id, persona_id, id]);
+  const [res] = await connection.query(query, [data, persona_id, id]);
   return res.affectedRows === 1;
   }catch(e){
     console.log ('errore' + e);
@@ -52,7 +56,7 @@ const updatePrenotazione = async (id, data, sede_id, persona_id) => {
     }
 }
 
-const updateCampiPrenotazione = async (id, data, sede_id, persona_id) => {
+const updateCampiPrenotazione = async (id, data,persona_id) => {
   const connection = await getConnection();
   const campi = [];
   const params = [];
@@ -60,10 +64,7 @@ const updateCampiPrenotazione = async (id, data, sede_id, persona_id) => {
     campi.push('data');
     params.push(data);
   }
-  if (sede_id !== undefined) {
-    campi.push('sede_id');
-    params.push(sede_id);
-  }
+
   if (persona_id !== undefined) {
     campi.push('persona_id');
     params.push(persona_id);
@@ -76,10 +77,10 @@ const updateCampiPrenotazione = async (id, data, sede_id, persona_id) => {
 }
 
 
-const prenotazioneDeleteById = async (id_prenotazione) => {
+const prenotazioneDeleteById = async (id_prenotazione, s) => {
   const connection = await getConnection();
-  const query = 'DELETE FROM prenotazione WHERE id = ?';
-  const [res] = await connection.query(query, [id_prenotazione]);
+  const query = 'DELETE FROM prenotazione WHERE id = ? AND sede_id=?';
+  const [res] = await connection.query(query, [id_prenotazione, s]);
   return res.affectedRows === 1;
 }
 module.exports = {

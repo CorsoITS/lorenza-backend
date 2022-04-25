@@ -1,5 +1,6 @@
 
 const { listPersona, getPersonaById, insertPersona, updatePersona, personaExistById, personaDeleteById, updateCampiPersona} = require('../dao/persona.dao');
+const Prenotazione = require('./Prenotazione')
 
 class Persona {
     constructor(p) {
@@ -24,7 +25,8 @@ class Persona {
 
     static async get(id) {
         let pf=await getPersonaById(id);
-        if (pf) { return new Persona(pf);}
+        if (pf) { 
+            return {'persona': new Persona(pf), 'prenotazione': new Prenotazione(pf)}}
         return null;
     }
 

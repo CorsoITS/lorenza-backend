@@ -13,6 +13,12 @@ async function getOperatoreById(id) {
   return new Operatore(operatori[0]);
 }
 
+async function getSedeOperatoreById(id) {
+  const conn = await getConnection();
+  const [operatori_sede] = await conn.query('SELECT sede_id FROM operatore WHERE id = ?', [id]);
+  return operatori_sede[0].sede_id;
+}
+
 async function insertOperatore(nome, cognome, ruolo, username, passwordHash, sede_id) {
   const conn = await getConnection();
   const [insert] = await conn.query(
@@ -24,5 +30,6 @@ async function insertOperatore(nome, cognome, ruolo, username, passwordHash, sed
 module.exports = {
   getOperatoreByUsername,
   insertOperatore,
-  getOperatoreById
+  getOperatoreById,
+  getSedeOperatoreById
 }

@@ -19,7 +19,8 @@ const personaExistById = async (id_persona) => {
 
 const getPersonaById = async (id_persona) => {
   const connection = await getConnection();
-  const query = 'SELECT * FROM persona WHERE id = ?';
+  const query = `SELECT persona.*, prenotazione.* FROM persona LEFT JOIN prenotazione 
+  ON prenotazione.persona_id=persona.id WHERE persona.id = ?`;
   const [rows] = await connection.query(query, [id_persona]);
   return rows[0];
 }
