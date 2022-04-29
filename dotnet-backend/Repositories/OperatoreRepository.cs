@@ -28,7 +28,7 @@ public class OperatoreRepository
                 cognome = reader.GetString("cognome"),                
                 username = reader.GetString("username"),
                 password = reader.GetString("password"),
-                sede_id = reader.GetString("sede_id")
+                sede_id = reader.GetInt16("sede_id")
             };
             result.Add(operatore);
         }
@@ -61,7 +61,7 @@ public class OperatoreRepository
                 cognome = reader.GetString("cognome"),
                 username = reader.GetString("username"),
                 password = reader.GetString("password"),
-                sede_id = reader.GetString("sede_id")
+                sede_id = reader.GetInt16("sede_id")
             };
             appDb.Connection.Close();
             return operatore;
@@ -114,7 +114,7 @@ public class OperatoreRepository
         var parameterSedeId = new MySqlParameter()
         {
             ParameterName = "sede_id",
-            DbType = System.Data.DbType.String,
+            DbType = System.Data.DbType.Int16,
             Value = operatore.sede_id
         };
         command.Parameters.Add(parameterSedeId);
@@ -173,7 +173,7 @@ public class OperatoreRepository
         var parameterSedeId = new MySqlParameter()
         {
             ParameterName = "sede_id",
-            DbType = System.Data.DbType.String,
+            DbType = System.Data.DbType.Int16,
             Value = operatore.sede_id
         };
         var result = Convert.ToBoolean(command.ExecuteNonQuery());

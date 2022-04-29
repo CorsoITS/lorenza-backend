@@ -6,6 +6,7 @@ public class OperatoreService
 {
 
     private OperatoreRepository operatoreRepository = new OperatoreRepository();
+    public SedeRepository SR = new SedeRepository();
 
     public IEnumerable<Operatore> GetOperatori()
     {
@@ -23,6 +24,10 @@ public class OperatoreService
         {
             if ((operatore.ruolo.Length == 0) || (operatore.nome.Length==0) || (operatore.cognome.Length ==0))
             {
+                return false;
+            }
+            if (SR.GetSede(operatore.sede_id)== null){
+                Console.WriteLine("La sede indicata non esiste");
                 return false;
             }
             else

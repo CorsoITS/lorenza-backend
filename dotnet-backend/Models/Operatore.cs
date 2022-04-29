@@ -8,6 +8,6 @@ public class Operatore
     public string? cognome { get; set; }
     public string? username { get; set; }
     public string? password { get; set; }
-    public string? sede_id { get; set; }
+    public int sede_id { get; set; }
 
 }
