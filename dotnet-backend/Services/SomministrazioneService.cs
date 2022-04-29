@@ -14,6 +14,10 @@ public class SomministrazioneService
     {
         return somministrazioneRepository.GetSomministrazioni();
     }
+        public IEnumerable<Somministrazione> GetSomministrazioniVaccino(string vaccino)
+    {
+        return somministrazioneRepository.GetSomministrazioniVaccino(vaccino);
+    }
 
     public Somministrazione GetSomministrazione(int id)
     {

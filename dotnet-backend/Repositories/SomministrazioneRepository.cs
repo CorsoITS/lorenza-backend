@@ -15,7 +15,41 @@ public class SomministrazioneRepository
 
         appDb.Connection.Open();
         var command = appDb.Connection.CreateCommand();
-        command.CommandText = "select id,vaccino, dose, data_somministrazione, note, opertore_id, persona_id from somministrazione";
+        command.CommandText = "select id, vaccino, dose, data_somministrazione, note, opertore_id, persona_id from somministrazione";
+        var reader = command.ExecuteReader();
+
+        while (reader.Read())
+        {
+            var somministrazione = new Somministrazione()
+            {
+                id = reader.GetInt16("id"),
+                vaccino = reader.GetString("vaccino"),
+                dose = reader.GetString("dose"),
+                data_somministrazione = reader.GetDateTime("data_somministrazione"),                
+                note = reader.GetString("note"),
+                opertore_id = reader.GetInt16("opertore_id"),
+                persona_id = reader.GetInt16("persona_id")
+            };
+            result.Add(somministrazione);
+        }
+        appDb.Connection.Close();
+
+        return result;
+    }
+        public IEnumerable<Somministrazione> GetSomministrazioniVaccino(string? vaccino)
+    {
+        var result = new List<Somministrazione>();
+
+        appDb.Connection.Open();
+        var command = appDb.Connection.CreateCommand();
+        command.CommandText = "select id,vaccino, dose, data_somministrazione, note, opertore_id, persona_id from somministrazione where vaccino = @vaccino";
+        var parameter = new MySqlParameter()
+        {
+            ParameterName = "vaccino",
+            DbType = System.Data.DbType.String,
+            Value = vaccino
+        };
+        command.Parameters.Add(parameter);
         var reader = command.ExecuteReader();
 
         while (reader.Read())
